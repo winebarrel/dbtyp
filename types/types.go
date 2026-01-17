@@ -18,21 +18,15 @@ type DB[T any] struct {
 }
 
 func (v *DB[T]) ExecQueryer() *ExecQueryer[T] {
-	return &ExecQueryer[T]{
-		ExecQueryer: v,
-	}
+	return &ExecQueryer[T]{i: v}
 }
 
 func (v *DB[T]) Execer() *Execer[T] {
-	return &Execer[T]{
-		Execer: v,
-	}
+	return &Execer[T]{i: v}
 }
 
 func (v *DB[T]) Queryer() *Queryer[T] {
-	return &Queryer[T]{
-		Queryer: v,
-	}
+	return &Queryer[T]{i: v}
 }
 
 func (v *DB[T]) BeginT() (*Tx[T], error) {
@@ -86,21 +80,15 @@ type Tx[T any] struct {
 }
 
 func (v *Tx[T]) ExecQueryer() *ExecQueryer[T] {
-	return &ExecQueryer[T]{
-		ExecQueryer: v,
-	}
+	return &ExecQueryer[T]{i: v}
 }
 
 func (v *Tx[T]) Execer() *Execer[T] {
-	return &Execer[T]{
-		Execer: v,
-	}
+	return &Execer[T]{i: v}
 }
 
 func (v *Tx[T]) Queryer() *Queryer[T] {
-	return &Queryer[T]{
-		Queryer: v,
-	}
+	return &Queryer[T]{i: v}
 }
 
 func (v *Tx[T]) PrepareT(query string) (*Stmt[T], error) {
@@ -124,7 +112,7 @@ func (v *Tx[T]) PrepareContextT(ctx context.Context, query string) (*Stmt[T], er
 }
 
 /////////////////////////////////////////////////////////////////////
-// Misc
+// Stmt
 /////////////////////////////////////////////////////////////////////
 
 var _ iface.Stmt = &Stmt[struct{}]{}
@@ -133,14 +121,80 @@ type Stmt[T any] struct {
 	*sql.Stmt
 }
 
+/////////////////////////////////////////////////////////////////////
+// ExecQueryer
+/////////////////////////////////////////////////////////////////////
+
+var _ iface.ExecQueryer = &ExecQueryer[struct{}]{}
+
 type ExecQueryer[T any] struct {
-	iface.ExecQueryer
+	i iface.ExecQueryer
 }
+
+func (v *ExecQueryer[T]) Exec(query string, args ...any) (sql.Result, error) {
+	return v.i.Exec(query, args...)
+}
+
+func (v *ExecQueryer[T]) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
+	return v.i.ExecContext(ctx, query, args...)
+}
+
+func (v *ExecQueryer[T]) Query(query string, args ...any) (*sql.Rows, error) {
+	return v.i.Query(query, args...)
+}
+
+func (v *ExecQueryer[T]) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
+	return v.i.QueryContext(ctx, query, args...)
+}
+
+func (v *ExecQueryer[T]) QueryRow(query string, args ...any) *sql.Row {
+	return v.i.QueryRow(query, args...)
+}
+
+func (v *ExecQueryer[T]) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
+	return v.QueryRowContext(ctx, query, args...)
+}
+
+/////////////////////////////////////////////////////////////////////
+// Execer
+/////////////////////////////////////////////////////////////////////
+
+var _ iface.Execer = &Execer[struct{}]{}
 
 type Execer[T any] struct {
-	iface.Execer
+	i iface.Execer
 }
 
+func (v *Execer[T]) Exec(query string, args ...any) (sql.Result, error) {
+	return v.i.Exec(query, args...)
+}
+
+func (v *Execer[T]) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
+	return v.i.ExecContext(ctx, query, args...)
+}
+
+/////////////////////////////////////////////////////////////////////
+// Queryer
+/////////////////////////////////////////////////////////////////////
+
+var _ iface.Queryer = &Queryer[struct{}]{}
+
 type Queryer[T any] struct {
-	iface.Queryer
+	i iface.Queryer
+}
+
+func (v *Queryer[T]) Query(query string, args ...any) (*sql.Rows, error) {
+	return v.i.Query(query, args...)
+}
+
+func (v *Queryer[T]) QueryContext(ctx context.Context, query string, args ...any) (*sql.Rows, error) {
+	return v.i.QueryContext(ctx, query, args...)
+}
+
+func (v *Queryer[T]) QueryRow(query string, args ...any) *sql.Row {
+	return v.i.QueryRow(query, args...)
+}
+
+func (v *Queryer[T]) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
+	return v.QueryRowContext(ctx, query, args...)
 }
