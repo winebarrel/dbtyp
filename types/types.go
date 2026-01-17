@@ -17,6 +17,8 @@ type DB[T any] struct {
 	*sql.DB
 }
 
+// Type converter
+
 func (v *DB[T]) ExecQueryer() *ExecQueryer[T] {
 	return &ExecQueryer[T]{i: v}
 }
@@ -28,6 +30,8 @@ func (v *DB[T]) Execer() *Execer[T] {
 func (v *DB[T]) Queryer() *Queryer[T] {
 	return &Queryer[T]{i: v}
 }
+
+// Typed begin
 
 func (v *DB[T]) BeginT() (*Tx[T], error) {
 	tx, err := v.Begin()
@@ -48,6 +52,8 @@ func (v *DB[T]) BeginTxT(ctx context.Context, opts *sql.TxOptions) (*Tx[T], erro
 
 	return &Tx[T]{Tx: tx}, nil
 }
+
+// Typed prepare
 
 func (v *DB[T]) PrepareT(query string) (*Stmt[T], error) {
 	stmt, err := v.Prepare(query)
@@ -79,6 +85,8 @@ type Tx[T any] struct {
 	*sql.Tx
 }
 
+// Type converter
+
 func (v *Tx[T]) ExecQueryer() *ExecQueryer[T] {
 	return &ExecQueryer[T]{i: v}
 }
@@ -90,6 +98,8 @@ func (v *Tx[T]) Execer() *Execer[T] {
 func (v *Tx[T]) Queryer() *Queryer[T] {
 	return &Queryer[T]{i: v}
 }
+
+// Typed prepare
 
 func (v *Tx[T]) PrepareT(query string) (*Stmt[T], error) {
 	stmt, err := v.Prepare(query)
@@ -131,6 +141,8 @@ type ExecQueryer[T any] struct {
 	i iface.ExecQueryer
 }
 
+// Interface implement
+
 func (v *ExecQueryer[T]) Exec(query string, args ...any) (sql.Result, error) {
 	return v.i.Exec(query, args...)
 }
@@ -155,6 +167,16 @@ func (v *ExecQueryer[T]) QueryRowContext(ctx context.Context, query string, args
 	return v.i.QueryRowContext(ctx, query, args...)
 }
 
+// Type converter
+
+func (v *ExecQueryer[T]) Execer() *Execer[T] {
+	return &Execer[T]{i: v.i}
+}
+
+func (v *ExecQueryer[T]) Queryer() *Queryer[T] {
+	return &Queryer[T]{i: v.i}
+}
+
 /////////////////////////////////////////////////////////////////////
 // Execer
 /////////////////////////////////////////////////////////////////////
@@ -164,6 +186,8 @@ var _ iface.Execer = &Execer[struct{}]{}
 type Execer[T any] struct {
 	i iface.Execer
 }
+
+// Interface implement
 
 func (v *Execer[T]) Exec(query string, args ...any) (sql.Result, error) {
 	return v.i.Exec(query, args...)
@@ -182,6 +206,8 @@ var _ iface.Queryer = &Queryer[struct{}]{}
 type Queryer[T any] struct {
 	i iface.Queryer
 }
+
+// Interface implement
 
 func (v *Queryer[T]) Query(query string, args ...any) (*sql.Rows, error) {
 	return v.i.Query(query, args...)
