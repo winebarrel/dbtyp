@@ -49,13 +49,13 @@ func TestExecer(t *testing.T) {
 
 	execer := db.Execer()
 	var _ iface.Execer = execer
-	_, err = execer.Exec("insert into foo values (1)")
+	_, err = execer.Exec("insert into foo values (100)")
 	require.NoError(err)
 
 	var n int
-	err = db.QueryRow("select 1").Scan(&n)
+	err = db.QueryRow("select id from foo").Scan(&n)
 	require.NoError(err)
-	assert.Equal(1, n)
+	assert.Equal(100, n)
 }
 
 func TestExecQueryer(t *testing.T) {
@@ -75,13 +75,13 @@ func TestExecQueryer(t *testing.T) {
 	var _ iface.ExecQueryer = execQueryer
 	var _ iface.Execer = execQueryer
 	var _ iface.Queryer = execQueryer
-	_, err = execQueryer.Exec("insert into foo values (1)")
+	_, err = execQueryer.Exec("insert into foo values (100)")
 	require.NoError(err)
 
 	var n int
-	err = execQueryer.QueryRow("select 1").Scan(&n)
+	err = execQueryer.QueryRow("select id from foo").Scan(&n)
 	require.NoError(err)
-	assert.Equal(1, n)
+	assert.Equal(100, n)
 }
 
 func TestNew2(t *testing.T) {
@@ -116,18 +116,18 @@ func TestExecQueryerToExecer(t *testing.T) {
 	var _ iface.ExecQueryer = execQueryer
 	var _ iface.Execer = execQueryer
 	var _ iface.Queryer = execQueryer
-	_, err = execQueryer.Exec("insert into foo values (1)")
+	_, err = execQueryer.Exec("insert into foo values (100)")
 	require.NoError(err)
 
 	execer := execQueryer.Execer()
 	var _ iface.Execer = execer
-	_, err = execQueryer.Exec("insert into foo values (2)")
+	_, err = execQueryer.Exec("insert into foo values (200)")
 	require.NoError(err)
 
 	var n int
-	err = db.QueryRow("select count(*)").Scan(&n)
+	err = db.QueryRow("select count(*) from foo").Scan(&n)
 	require.NoError(err)
-	assert.Equal(1, n)
+	assert.Equal(2, n)
 }
 
 func TestExecQueryerToQueryer(t *testing.T) {
@@ -147,13 +147,13 @@ func TestExecQueryerToQueryer(t *testing.T) {
 	var _ iface.ExecQueryer = execQueryer
 	var _ iface.Execer = execQueryer
 	var _ iface.Queryer = execQueryer
-	_, err = execQueryer.Exec("insert into foo values (1)")
+	_, err = execQueryer.Exec("insert into foo values (100)")
 	require.NoError(err)
 
 	var n int
 	queryer := execQueryer.Queryer()
 	var _ iface.Queryer = queryer
-	err = queryer.QueryRow("select count(*)").Scan(&n)
+	err = queryer.QueryRow("select id from foo").Scan(&n)
 	require.NoError(err)
-	assert.Equal(1, n)
+	assert.Equal(100, n)
 }
