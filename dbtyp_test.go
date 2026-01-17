@@ -98,3 +98,62 @@ func TestNew2(t *testing.T) {
 	require.NoError(err)
 	assert.Equal(1, n)
 }
+
+func TestExecQueryerToExecer(t *testing.T) {
+	type AliceDB struct{}
+
+	assert := assert.New(t)
+	require := require.New(t)
+
+	db0, err := sql.Open("sqlite", "file::memory:")
+	require.NoError(err)
+	db := dbtyp.New[AliceDB](db0)
+
+	_, err = db.Exec("create table foo (id int)")
+	require.NoError(err)
+
+	execQueryer := db.ExecQueryer()
+	var _ iface.ExecQueryer = execQueryer
+	var _ iface.Execer = execQueryer
+	var _ iface.Queryer = execQueryer
+	_, err = execQueryer.Exec("insert into foo values (1)")
+	require.NoError(err)
+
+	execer := execQueryer.Execer()
+	var _ iface.Execer = execer
+	_, err = execQueryer.Exec("insert into foo values (2)")
+	require.NoError(err)
+
+	var n int
+	err = db.QueryRow("select count(*)").Scan(&n)
+	require.NoError(err)
+	assert.Equal(1, n)
+}
+
+func TestExecQueryerToQueryer(t *testing.T) {
+	type AliceDB struct{}
+
+	assert := assert.New(t)
+	require := require.New(t)
+
+	db0, err := sql.Open("sqlite", "file::memory:")
+	require.NoError(err)
+	db := dbtyp.New[AliceDB](db0)
+
+	_, err = db.Exec("create table foo (id int)")
+	require.NoError(err)
+
+	execQueryer := db.ExecQueryer()
+	var _ iface.ExecQueryer = execQueryer
+	var _ iface.Execer = execQueryer
+	var _ iface.Queryer = execQueryer
+	_, err = execQueryer.Exec("insert into foo values (1)")
+	require.NoError(err)
+
+	var n int
+	queryer := execQueryer.Queryer()
+	var _ iface.Queryer = queryer
+	err = queryer.QueryRow("select count(*)").Scan(&n)
+	require.NoError(err)
+	assert.Equal(1, n)
+}
