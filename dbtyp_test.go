@@ -29,7 +29,7 @@ func TestQueryer(t *testing.T) {
 	n = 0
 	queryer := db.Queryer()
 	var _ iface.Queryer = queryer
-	queryer.QueryRow("select 1").Scan(&n)
+	err = queryer.QueryRow("select 1").Scan(&n)
 	require.NoError(err)
 	assert.Equal(1, n)
 }
@@ -49,10 +49,11 @@ func TestExecer(t *testing.T) {
 
 	execer := db.Execer()
 	var _ iface.Execer = execer
-	execer.Exec("insert into foo values (1)")
+	_, err = execer.Exec("insert into foo values (1)")
+	require.NoError(err)
 
 	var n int
-	db.QueryRow("select 1").Scan(&n)
+	err = db.QueryRow("select 1").Scan(&n)
 	require.NoError(err)
 	assert.Equal(1, n)
 }
@@ -74,10 +75,11 @@ func TestExecQueryer(t *testing.T) {
 	var _ iface.ExecQueryer = execQueryer
 	var _ iface.Execer = execQueryer
 	var _ iface.Queryer = execQueryer
-	execQueryer.Exec("insert into foo values (1)")
+	_, err = execQueryer.Exec("insert into foo values (1)")
+	require.NoError(err)
 
 	var n int
-	execQueryer.QueryRow("select 1").Scan(&n)
+	err = execQueryer.QueryRow("select 1").Scan(&n)
 	require.NoError(err)
 	assert.Equal(1, n)
 }
@@ -89,6 +91,7 @@ func TestNew2(t *testing.T) {
 	require := require.New(t)
 
 	db, err := dbtyp.New2[AliceDB](sql.Open("sqlite", "file::memory:"))
+	require.NoError(err)
 
 	var n int
 	err = db.QueryRow("select 1").Scan(&n)

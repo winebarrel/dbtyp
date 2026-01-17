@@ -50,7 +50,7 @@ func (v *DB[T]) BeginTxT(ctx context.Context, opts *sql.TxOptions) (*Tx[T], erro
 }
 
 func (v *DB[T]) PrepareT(query string) (*Stmt[T], error) {
-	stmt, err := v.DB.Prepare(query)
+	stmt, err := v.Prepare(query)
 
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (v *DB[T]) PrepareT(query string) (*Stmt[T], error) {
 }
 
 func (v *DB[T]) PrepareContextT(ctx context.Context, query string) (*Stmt[T], error) {
-	stmt, err := v.DB.PrepareContext(ctx, query)
+	stmt, err := v.PrepareContext(ctx, query)
 
 	if err != nil {
 		return nil, err
@@ -92,7 +92,7 @@ func (v *Tx[T]) Queryer() *Queryer[T] {
 }
 
 func (v *Tx[T]) PrepareT(query string) (*Stmt[T], error) {
-	stmt, err := v.Tx.Prepare(query)
+	stmt, err := v.Prepare(query)
 
 	if err != nil {
 		return nil, err
@@ -102,7 +102,7 @@ func (v *Tx[T]) PrepareT(query string) (*Stmt[T], error) {
 }
 
 func (v *Tx[T]) PrepareContextT(ctx context.Context, query string) (*Stmt[T], error) {
-	stmt, err := v.Tx.PrepareContext(ctx, query)
+	stmt, err := v.PrepareContext(ctx, query)
 
 	if err != nil {
 		return nil, err
@@ -152,7 +152,7 @@ func (v *ExecQueryer[T]) QueryRow(query string, args ...any) *sql.Row {
 }
 
 func (v *ExecQueryer[T]) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
-	return v.QueryRowContext(ctx, query, args...)
+	return v.i.QueryRowContext(ctx, query, args...)
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -196,5 +196,5 @@ func (v *Queryer[T]) QueryRow(query string, args ...any) *sql.Row {
 }
 
 func (v *Queryer[T]) QueryRowContext(ctx context.Context, query string, args ...any) *sql.Row {
-	return v.QueryRowContext(ctx, query, args...)
+	return v.i.QueryRowContext(ctx, query, args...)
 }
