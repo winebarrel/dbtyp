@@ -1,1 +1,1 @@
-# dptyp
+# dbtyp
