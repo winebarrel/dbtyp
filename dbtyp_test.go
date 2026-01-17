@@ -121,7 +121,7 @@ func TestExecQueryerToExecer(t *testing.T) {
 
 	execer := execQueryer.Execer()
 	var _ iface.Execer = execer
-	_, err = execQueryer.Exec("insert into foo values (200)")
+	_, err = execer.Exec("insert into foo values (200)")
 	require.NoError(err)
 
 	var n int
