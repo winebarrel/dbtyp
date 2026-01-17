@@ -1,6 +1,8 @@
 # dbtyp
 
-dbtyp is a library that associates types with *sql.DB.
+[![CI](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml/badge.svg)](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml)
+
+dbtyp is a library that associates types with `*sql.DB`.
 
 ## Installation
 
