@@ -61,15 +61,24 @@ type Stmt interface {
 	QueryRowContext(ctx context.Context, args ...any) *sql.Row
 }
 
+var _ ExecQueryer = &sql.DB{}
+var _ ExecQueryer = &sql.Tx{}
+
 type ExecQueryer interface {
 	Execer
 	Queryer
 }
 
+var _ Execer = &sql.DB{}
+var _ Execer = &sql.Tx{}
+
 type Execer interface {
 	Exec(query string, args ...any) (sql.Result, error)
 	ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error)
 }
+
+var _ Queryer = &sql.DB{}
+var _ Queryer = &sql.Tx{}
 
 type Queryer interface {
 	Query(query string, args ...any) (*sql.Rows, error)
