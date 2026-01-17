@@ -1,6 +1,6 @@
 # dbtyp
 
-dbtyp is a library that associates types with sql.DB.
+dbtyp is a library that associates types with *sql.DB.
 
 ## Installation
 
