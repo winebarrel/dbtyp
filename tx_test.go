@@ -43,20 +43,22 @@ func TestTxRollback(t *testing.T) {
 	db, err := dbtyp.New2[AliceDB](sql.Open("sqlite", "file::memory:"))
 	require.NoError(err)
 
-	_, err = db.ExecContext(t.Context(), "create table foo (id int)")
+	ctx := t.Context()
+
+	_, err = db.ExecContext(ctx, "create table foo (id int)")
 	require.NoError(err)
 
-	tx, err := db.BeginTxT(t.Context(), nil)
+	tx, err := db.BeginTxT(ctx, nil)
 	var _ iface.Tx = tx
 	require.NoError(err)
-	_, err = tx.ExecContext(t.Context(), "insert into foo values (100)")
+	_, err = tx.ExecContext(ctx, "insert into foo values (100)")
 	require.NoError(err)
 
 	err = tx.Rollback()
 	require.NoError(err)
 
 	n := -1
-	err = db.QueryRowContext(t.Context(), "select count(*) from foo").Scan(&n)
+	err = db.QueryRowContext(ctx, "select count(*) from foo").Scan(&n)
 	require.NoError(err)
 	assert.Equal(0, n)
 }
