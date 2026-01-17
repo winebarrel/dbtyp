@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/winebarrel/dbtyp"
+	"github.com/winebarrel/dbtyp/iface"
 	_ "modernc.org/sqlite"
 )
 
@@ -21,6 +22,7 @@ func TestTxCommit(t *testing.T) {
 	require.NoError(err)
 
 	tx, err := db.BeginT()
+	var _ iface.Tx = tx
 	require.NoError(err)
 	_, err = tx.Exec("insert into foo values (100)")
 	require.NoError(err)
@@ -45,6 +47,7 @@ func TestTxRollback(t *testing.T) {
 	require.NoError(err)
 
 	tx, err := db.BeginTxT(t.Context(), nil)
+	var _ iface.Tx = tx
 	require.NoError(err)
 	_, err = tx.ExecContext(t.Context(), "insert into foo values (100)")
 	require.NoError(err)
