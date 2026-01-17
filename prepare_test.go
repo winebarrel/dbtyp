@@ -25,7 +25,7 @@ func TestDBPrepare(t *testing.T) {
 	var _ iface.Stmt = stmt
 	require.NoError(err)
 
-	stmt.Exec(100)
+	_, err = stmt.Exec(100)
 	require.NoError(err)
 
 	var n int
