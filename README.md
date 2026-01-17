@@ -50,6 +50,7 @@ func main() {
 		panic(err)
 	}
 	bob.Exec("create table bar (id int)")
+
 	// bob = alice // COMPILE ERROR!
 
 	procForAlice(alice.ExecQueryer())
