@@ -1,6 +1,9 @@
 # dbtyp
 
 [![CI](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml/badge.svg)](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/winebarrel/dbtyp.svg)](https://pkg.go.dev/github.com/winebarrel/dbtyp)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/winebarrel/dbtyp)](https://pkg.go.dev/github.com/winebarrel/dbtyp?tab=versions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/winebarrel/dbtyp)](https://goreportcard.com/report/github.com/winebarrel/dbtyp)
 
 dbtyp is a library that associates types with `*sql.DB`.
 
