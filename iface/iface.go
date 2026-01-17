@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var _ DB = &sql.DB{}
+
 type DB interface {
 	Begin() (*sql.Tx, error)
 	BeginTx(ctx context.Context, opts *sql.TxOptions) (*sql.Tx, error)
@@ -30,6 +32,8 @@ type DB interface {
 	Stats() sql.DBStats
 }
 
+var _ Tx = &sql.Tx{}
+
 type Tx interface {
 	Commit() error
 	Exec(query string, args ...any) (sql.Result, error)
@@ -44,6 +48,8 @@ type Tx interface {
 	Stmt(stmt *sql.Stmt) *sql.Stmt
 	StmtContext(ctx context.Context, stmt *sql.Stmt) *sql.Stmt
 }
+
+var _ Stmt = &sql.Stmt{}
 
 type Stmt interface {
 	Close() error
