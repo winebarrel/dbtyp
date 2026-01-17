@@ -11,7 +11,7 @@ import (
 	_ "modernc.org/sqlite"
 )
 
-func TestTxCommit(t *testing.T) {
+func TestDBPrepare(t *testing.T) {
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -21,13 +21,11 @@ func TestTxCommit(t *testing.T) {
 	_, err = db.Exec("create table foo (id int)")
 	require.NoError(err)
 
-	tx, err := db.BeginT()
-	var _ iface.Tx = tx
-	require.NoError(err)
-	_, err = tx.Exec("insert into foo values (100)")
+	stmt, err := db.PrepareT("insert into foo values (?)")
+	var _ iface.Stmt = stmt
 	require.NoError(err)
 
-	err = tx.Commit()
+	_, err = stmt.Exec(100)
 	require.NoError(err)
 
 	var n int
@@ -36,7 +34,7 @@ func TestTxCommit(t *testing.T) {
 	assert.Equal(100, n)
 }
 
-func TestTxRollback(t *testing.T) {
+func TestTxPrepare(t *testing.T) {
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -49,16 +47,19 @@ func TestTxRollback(t *testing.T) {
 	require.NoError(err)
 
 	tx, err := db.BeginTxT(ctx, nil)
-	var _ iface.Tx = tx
-	require.NoError(err)
-	_, err = tx.ExecContext(ctx, "insert into foo values (100)")
 	require.NoError(err)
 
-	err = tx.Rollback()
+	stmt, err := tx.PrepareContextT(ctx, "insert into foo values (?)")
+	var _ iface.Stmt = stmt
+	require.NoError(err)
+	_, err = stmt.ExecContext(ctx, 100)
 	require.NoError(err)
 
-	n := -1
-	err = db.QueryRowContext(ctx, "select count(*) from foo").Scan(&n)
+	err = tx.Commit()
 	require.NoError(err)
-	assert.Equal(0, n)
+
+	var n int
+	err = db.QueryRowContext(ctx, "select id from foo").Scan(&n)
+	require.NoError(err)
+	assert.Equal(100, n)
 }
