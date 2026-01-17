@@ -12,8 +12,6 @@ import (
 )
 
 func TestQueryer(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -35,8 +33,6 @@ func TestQueryer(t *testing.T) {
 }
 
 func TestExecer(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -59,8 +55,6 @@ func TestExecer(t *testing.T) {
 }
 
 func TestExecQueryer(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -85,8 +79,6 @@ func TestExecQueryer(t *testing.T) {
 }
 
 func TestNew2(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -100,8 +92,6 @@ func TestNew2(t *testing.T) {
 }
 
 func TestExecQueryerToExecer(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -131,8 +121,6 @@ func TestExecQueryerToExecer(t *testing.T) {
 }
 
 func TestExecQueryerToQueryer(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 

@@ -11,8 +11,6 @@ import (
 )
 
 func TestTxCommit(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
@@ -37,8 +35,6 @@ func TestTxCommit(t *testing.T) {
 }
 
 func TestTxRollback(t *testing.T) {
-	type AliceDB struct{}
-
 	assert := assert.New(t)
 	require := require.New(t)
 
