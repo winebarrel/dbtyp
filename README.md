@@ -9,7 +9,7 @@ dbtyp is a library that associates types with `*sql.DB`.
 
 [*types.DB[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#DB) and [*types.Tx[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Tx) have the same methods as [*sql.DB](https://pkg.go.dev/database/sql#DB) and [*sql.Tx](https://pkg.go.dev/database/sql#Tx), but it can define different types with the same interface using [generics](https://go.dev/doc/tutorial/generics).
 
-Additionally, it can generate instances of restricted types [ExecQueryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#ExecQueryer), [Execer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Execer), and [Queryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Queryer).
+Additionally, it can generate instances of restricted types [*types.ExecQueryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#ExecQueryer), [*types.Execer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Execer), and [*types.Queryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Queryer).
 
 ## Installation
 
