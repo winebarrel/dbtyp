@@ -7,9 +7,9 @@
 
 dbtyp is a library that associates types with `*sql.DB`.
 
-[*types.DB[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#DB) and [*types.Tx[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Tx) have the same methods as [*sql.DB](https://pkg.go.dev/database/sql#DB) and [*sql.Tx](https://pkg.go.dev/database/sql#Tx), but it can define different types with the same interface using [generics](https://go.dev/doc/tutorial/generics).
+[*dbtyp.DB[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#DB) and [*dbtyp.Tx[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Tx) have the same methods as [*sql.DB](https://pkg.go.dev/database/sql#DB) and [*sql.Tx](https://pkg.go.dev/database/sql#Tx), but it can define different types with the same interface using [generics](https://go.dev/doc/tutorial/generics).
 
-Additionally, it can generate instances of restricted types [*types.ExecQueryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#ExecQueryer), [*types.Execer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Execer), and [*types.Queryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp/types#Queryer).
+Additionally, it can generate instances of restricted types [*dbtyp.ExecQueryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#ExecQueryer), [*dbtyp.Execer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Execer), and [*dbtyp.Queryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Queryer).
 
 ## Installation
 
@@ -27,7 +27,6 @@ import (
 	"fmt"
 
 	"github.com/winebarrel/dbtyp"
-	"github.com/winebarrel/dbtyp/types"
 	_ "modernc.org/sqlite"
 )
 
@@ -38,33 +37,41 @@ type MyDB interface {
 	AliceDB | BobDB
 }
 
-func OpenDB[T MyDB]() (*types.DB[T], error) {
-	return dbtyp.New2[T](sql.Open("sqlite", "file::memory:"))
-}
-
 func main() {
-	alice, err := OpenDB[AliceDB]()
-	if err != nil {
-		panic(err)
-	}
-	alice.Exec("create table foo (id int)")
-
-	bob, err := OpenDB[BobDB]()
-	if err != nil {
-		panic(err)
-	}
-	bob.Exec("create table bar (id int)")
+	aliceDB := openDB[AliceDB]()
+	bobDB := openDB[BobDB]()
 
 	// bob = alice // COMPILE ERROR!
 
-	procForAlice(alice.ExecQueryer())
+	createTable(aliceDB, "foo")
+	createTable(bobDB, "bar")
+
+	procForAlice(aliceDB.ExecQueryer())
 	// procForAlice(bob.ExecQueryer()) // COMPILE ERROR!
 
-	procForBob(bob.Queryer())
+	procForBob(bobDB.Queryer())
 	// procForBob(alice.Queryer()) // COMPILE ERROR!
 }
 
-func procForAlice(eq *types.ExecQueryer[AliceDB]) {
+func openDB[T MyDB]() *dbtyp.DB[T] {
+	db, err := dbtyp.New2[T](sql.Open("sqlite", "file::memory:"))
+
+	if err != nil {
+		panic(err)
+	}
+
+	return db
+}
+
+func createTable[T MyDB](db *dbtyp.DB[T], name string) {
+	_, err := db.Exec("create table " + name + " (id int)")
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func procForAlice(eq *dbtyp.ExecQueryer[AliceDB]) {
 	_, err := eq.Exec("insert into foo values (1)")
 	if err != nil {
 		panic(err)
@@ -78,7 +85,7 @@ func procForAlice(eq *types.ExecQueryer[AliceDB]) {
 	fmt.Println("foo rows count:", n)
 }
 
-func procForBob(q *types.Queryer[BobDB]) {
+func procForBob(q *dbtyp.Queryer[BobDB]) {
 	var n int
 	err := q.QueryRow("select count(*) from bar").Scan(&n)
 	if err != nil {

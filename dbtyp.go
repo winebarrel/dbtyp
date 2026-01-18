@@ -2,15 +2,13 @@ package dbtyp
 
 import (
 	"database/sql"
-
-	"github.com/winebarrel/dbtyp/types"
 )
 
-func New[T any](v *sql.DB) *types.DB[T] {
-	return &types.DB[T]{DB: v}
+func New[T any](v *sql.DB) *DB[T] {
+	return &DB[T]{DB: v}
 }
 
-func New2[T any](v *sql.DB, err error) (*types.DB[T], error) {
+func New2[T any](v *sql.DB, err error) (*DB[T], error) {
 	if err != nil {
 		return nil, err
 	}
