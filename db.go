@@ -7,10 +7,8 @@ import (
 	"github.com/winebarrel/dbtyp/iface"
 )
 
-var _ iface.DB = &DB[struct{}]{}
-
 type DB[T any] struct {
-	*sql.DB
+	iface.DB
 }
 
 // Type converter

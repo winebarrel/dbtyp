@@ -2,15 +2,12 @@ package dbtyp
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/winebarrel/dbtyp/iface"
 )
 
-var _ iface.Tx = &Tx[struct{}]{}
-
 type Tx[T any] struct {
-	*sql.Tx
+	iface.Tx
 }
 
 // Type converter
