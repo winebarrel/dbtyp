@@ -1,14 +1,14 @@
 package dbtyp
 
 import (
-	"database/sql"
+	"github.com/winebarrel/dbtyp/iface"
 )
 
-func New[T any](v *sql.DB) *DB[T] {
+func New[T any](v iface.DB) *DB[T] {
 	return &DB[T]{DB: v}
 }
 
-func New2[T any](v *sql.DB, err error) (*DB[T], error) {
+func New2[T any](v iface.DB, err error) (*DB[T], error) {
 	if err != nil {
 		return nil, err
 	}
