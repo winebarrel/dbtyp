@@ -1,7 +1,7 @@
 package dbtyp
 
 import (
-	"github.com/winebarrel/dbtyp/iface"
+	"github.com/kanmu/dbtyp/iface"
 )
 
 func New[T any](v iface.DB) *DB[T] {

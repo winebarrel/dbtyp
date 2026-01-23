@@ -1,4 +1,4 @@
-module github.com/winebarrel/dbtyp
+module github.com/kanmu/dbtyp
 
 go 1.24.0
 

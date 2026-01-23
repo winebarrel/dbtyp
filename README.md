@@ -1,20 +1,20 @@
 # dbtyp
 
-[![CI](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml/badge.svg)](https://github.com/winebarrel/dbtyp/actions/workflows/ci.yml)
-[![Go Reference](https://pkg.go.dev/badge/github.com/winebarrel/dbtyp.svg)](https://pkg.go.dev/github.com/winebarrel/dbtyp)
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/winebarrel/dbtyp)](https://pkg.go.dev/github.com/winebarrel/dbtyp?tab=versions)
-[![Go Report Card](https://goreportcard.com/badge/github.com/winebarrel/dbtyp)](https://goreportcard.com/report/github.com/winebarrel/dbtyp)
+[![CI](https://github.com/kanmu/dbtyp/actions/workflows/ci.yml/badge.svg)](https://github.com/kanmu/dbtyp/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/kanmu/dbtyp.svg)](https://pkg.go.dev/github.com/kanmu/dbtyp)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/kanmu/dbtyp)](https://pkg.go.dev/github.com/kanmu/dbtyp?tab=versions)
+[![Go Report Card](https://goreportcard.com/badge/github.com/kanmu/dbtyp)](https://goreportcard.com/report/github.com/kanmu/dbtyp)
 
 dbtyp is a library that associates types with `*sql.DB`.
 
-[*dbtyp.DB[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#DB) and [*dbtyp.Tx[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Tx) have the same methods as [*sql.DB](https://pkg.go.dev/database/sql#DB) and [*sql.Tx](https://pkg.go.dev/database/sql#Tx), but it can define different types with the same interface using [generics](https://go.dev/doc/tutorial/generics).
+[*dbtyp.DB[T]](https://pkg.go.dev/github.com/kanmu/dbtyp#DB) and [*dbtyp.Tx[T]](https://pkg.go.dev/github.com/kanmu/dbtyp#Tx) have the same methods as [*sql.DB](https://pkg.go.dev/database/sql#DB) and [*sql.Tx](https://pkg.go.dev/database/sql#Tx), but it can define different types with the same interface using [generics](https://go.dev/doc/tutorial/generics).
 
-Additionally, it can generate instances of restricted types [*dbtyp.ExecQueryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#ExecQueryer), [*dbtyp.Execer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Execer), and [*dbtyp.Queryer[T]](https://pkg.go.dev/github.com/winebarrel/dbtyp#Queryer).
+Additionally, it can generate instances of restricted types [*dbtyp.ExecQueryer[T]](https://pkg.go.dev/github.com/kanmu/dbtyp#ExecQueryer), [*dbtyp.Execer[T]](https://pkg.go.dev/github.com/kanmu/dbtyp#Execer), and [*dbtyp.Queryer[T]](https://pkg.go.dev/github.com/kanmu/dbtyp#Queryer).
 
 ## Installation
 
 ```sh
-go get github.com/winebarrel/dbtyp
+go get github.com/kanmu/dbtyp
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/winebarrel/dbtyp"
+	"github.com/kanmu/dbtyp"
 	_ "modernc.org/sqlite"
 )
 

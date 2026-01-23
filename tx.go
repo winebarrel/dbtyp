@@ -3,7 +3,7 @@ package dbtyp
 import (
 	"context"
 
-	"github.com/winebarrel/dbtyp/iface"
+	"github.com/kanmu/dbtyp/iface"
 )
 
 type Tx[T any] struct {
