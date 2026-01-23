@@ -1,7 +1,7 @@
 package dbtyp
 
 import (
-	"github.com/winebarrel/dbtyp/iface"
+	"github.com/kanmu/dbtyp/iface"
 )
 
 type Stmt[T any] struct {

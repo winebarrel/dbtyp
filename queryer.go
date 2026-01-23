@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/winebarrel/dbtyp/iface"
+	"github.com/kanmu/dbtyp/iface"
 )
 
 var _ iface.Queryer = &Queryer[struct{}]{}
